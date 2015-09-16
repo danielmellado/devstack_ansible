@@ -1,0 +1,34 @@
+---
+- name: Spawn VM in nova
+  sudo: false
+  nova_compute:
+    state: present
+    auth_url: "{{ os_auth_url }}"
+    login_username: "{{ os_username }}"
+    login_password: "{{ os_password }}"
+    login_tenant_name: "{{ os_tenant_name }}"
+    name: "{{ vm_name }}"
+    image_id: "{{ os_image_id }}"
+    key_name: "{{ os_key_name }}"
+    region_name: "{{ os_region_name }}"
+    wait_for: 500
+    flavor_id: "{{ os_flavor_id }}"
+    meta:
+      hostname: "{{ vm_name }}"
+    security_groups: "{{ os_security_groups }}"
+    auto_floating_ip: yes
+  register: nova
+
+- name: add instance with ssh ip
+  add_host:
+    hostname: "{{ vm_name }}"
+    ansible_ssh_host: "{{ item }}"
+    ansible_ssh_user: "fedora"
+    groups: "devstack"
+  with_items: nova.public_ip
+
+- name: wait for instance to boot
+  wait_for:
+    host: "{{ item }}"
+    port: 22
+  with_items: nova.public_ip

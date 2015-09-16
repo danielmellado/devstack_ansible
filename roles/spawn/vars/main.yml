@@ -1,0 +1,13 @@
+---
+os_auth_url: ""
+os_username: ""
+os_password: ""
+os_tenant_name: ""
+vm_name: ""
+os_image_id: ""
+os_key_name: ""
+os_flavor_id: ""
+os_net_id: ""
+os_net_name: ""
+os_region_name: ""
+os_security_groups: ""

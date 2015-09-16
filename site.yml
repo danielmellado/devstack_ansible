@@ -1,0 +1,8 @@
+---
+- hosts: all
+  roles:
+   - spawn
+
+- hosts: devstack
+  roles:
+   - devstack
